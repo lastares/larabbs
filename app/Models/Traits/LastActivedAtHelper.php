@@ -23,7 +23,7 @@ trait LastActivedAtHelper
         $now = Carbon::now()->toDateTimeString();
 
         // 数据写入 Redis ，字段已存在会被更新
-        Redis::hSet($hash, $field, $now);
+        \Illuminate\Support\Facades\Redis::hSet($hash, $field, $now);
     }
 
     public function syncUserActivedAt()
@@ -59,7 +59,7 @@ trait LastActivedAtHelper
         $field = $this->getHashField();
 
         // 三元运算符，优先选择 Redis 的数据，否则使用数据库中
-        $datetime = Redis::hGet($hash, $field) ? : $value;
+        $datetime = \Illuminate\Support\Facades\Redis::hGet($hash, $field) ? : $value;
 
         // 如果存在的话，返回时间对应的 Carbon 实体
         if ($datetime) {
